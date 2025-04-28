@@ -1,4 +1,11 @@
-import { Avatar, Box, Button, Paper, styled, Typography } from "@mui/material";
+import {
+  CardMedia,
+  Box,
+  Button,
+  Paper,
+  styled,
+  Typography,
+} from "@mui/material";
 import verifiedIcon from "../../assets/verified_icon.svg";
 import infoIcon from "../../assets/info_icon.svg";
 import React from "react";
@@ -30,11 +37,12 @@ const InfoCard = styled(Paper)(({ theme }) => ({
 const SelectedUserOverview = ({ user, role }) => {
   const isDoctor = role === "doctor";
 
-  console.log(user,'data')
+  console.log(user, "data");
 
   return (
     <StyledBox>
-      <Avatar
+      <CardMedia
+        component="img"
         src={user?.selectedImage}
         alt={isDoctor ? "Doctor" : "Patient"}
         sx={{
@@ -44,6 +52,7 @@ const SelectedUserOverview = ({ user, role }) => {
           borderRadius: "8px",
           bgcolor: "#eaefff",
           height: "40vh",
+          objectFit: "contain",
         }}
       />
 

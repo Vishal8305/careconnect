@@ -26,7 +26,7 @@ const Specialties = [
 const doctorApi = import.meta.env.VITE_DOCTOR_API;
 
 const AvailableDoctors = () => {
-  const [selectedSpecialty, setSelectedSpecialty] = useState('All Doctors');
+  const [selectedSpecialty, setSelectedSpecialty] = useState("All Doctors");
   const [doctors, setDoctors] = useState([]);
   const [filteredDoctors, setFilteredDoctors] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -56,7 +56,7 @@ const AvailableDoctors = () => {
   }, []);
 
   useEffect(() => {
-    if (selectedSpecialty === 'All Doctors' || selectedSpecialty === null) {
+    if (selectedSpecialty === "All Doctors" || selectedSpecialty === null) {
       setFilteredDoctors(doctors);
     } else {
       setFilteredDoctors(
@@ -64,7 +64,6 @@ const AvailableDoctors = () => {
       );
     }
   }, [selectedSpecialty, doctors]);
-  
 
   return (
     <Box sx={{ mt: 10 }}>
@@ -85,9 +84,7 @@ const AvailableDoctors = () => {
       {/* Specialties List */}
       <Stack sx={{ alignItems: { xs: "center", sm: "start" } }}>
         <SpecialityMenu
-          onSelectSpeciality={(specialty) =>
-            setSelectedSpecialty(specialty)
-          }
+          onSelectSpeciality={(specialty) => setSelectedSpecialty(specialty)}
         />
       </Stack>
 
@@ -125,7 +122,10 @@ const AvailableDoctors = () => {
                   "&:hover": { transform: "translateY(-10px)" },
                 }}
                 key={index}
-                onClick={() => navigate(`/patient/bookAppointments/${item.id}`)}
+                onClick={() => {
+                  navigate(`/patient/bookAppointments/${item.id}`);
+                  window.scrollTo(0, 0);
+                }}
               >
                 <CardMedia
                   component="img"
@@ -159,7 +159,7 @@ const AvailableDoctors = () => {
                     fontWeight="medium"
                     color="text.primary"
                   >
-                    {item.doctorName} 
+                    {item.doctorName}
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
                     {item.specialization}

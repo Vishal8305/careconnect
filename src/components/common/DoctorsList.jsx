@@ -103,9 +103,12 @@ const DoctorsList = ({ title, specialization, doctorId }) => {
               transition: "transform 0.5s",
               "&:hover": { transform: "translateY(-10px)" },
             }}
-            onClick={() =>
-              isRelated && navigate(`/patient/bookAppointments/${doctor.id}`)
-            }
+            onClick={() => {
+              if (isRelated) {
+                navigate(`/patient/bookAppointments/${doctor.id}`);
+                window.scrollTo(0, 0); // Force scroll top manually
+              }
+            }}
           >
             <CardMedia
               component="img"

@@ -51,6 +51,12 @@ export const updateProfileData = createAsyncThunk(
   }
 );
 
+const normalizeSpecialization = (specialization, options) => {
+  return options.find(
+    (item) => item.toLowerCase() === (specialization || "").toLowerCase()
+  ) || specialization || "";
+};
+
 
 const specialityData = [
   "General Physician",
@@ -102,7 +108,7 @@ const profileSlice = createSlice({
       state.uuId = action.payload;
     },
     setFormData: (state, action) => {
-      state.formData = action.payload; 
+      state.formData = { ...state.formData, ...action.payload };
     },
     setLoading: (state, action) => {
       state.loading = action.payload;
@@ -117,8 +123,17 @@ const profileSlice = createSlice({
       .addCase(fetchProfileData.fulfilled, (state, action) => {
         state.loading = false;
         state.profileData = action.payload;
-        state.formData = { ...action.payload };
-      })
+      
+     // 👇 Normalize specialization field when setting formData
+      state.formData = {
+        ...action.payload,
+        specialization: normalizeSpecialization(
+          action.payload.specialization,
+          state.specialityData
+        ),
+      };
+    })
+
       .addCase(fetchProfileData.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;

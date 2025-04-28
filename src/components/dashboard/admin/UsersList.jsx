@@ -118,7 +118,6 @@ const UsersList = () => {
           display: "flex",
           flexWrap: "wrap",
           gap: "20px",
-          justifyContent: "center",
           px: { xs: 2, sm: 0 },
           mt: 3,
         }}
@@ -146,7 +145,7 @@ const UsersList = () => {
                 bgcolor: "#eaefff",
                 height: "220px",
                 width: "100%",
-                objectFit: "cover",
+                objectFit: "contain",
               }}
             />
             <CardContent sx={{ textAlign: "left", paddingBottom: "16px" }}>

@@ -46,10 +46,7 @@ const LoginPage = () => {
 
       const users = await response.json();
       console.log(users,'data')
-      const user =
-        role === "patient"
-          ? users.find((u) => u.username === username)
-          : users.find((u) => u.doctorName === username);
+      const user = users.find((u) => u.username === username)
 
       if (!user) {
         toast.error("Username not found.");

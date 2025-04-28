@@ -604,7 +604,9 @@ const UserProfile = () => {
                       </Select>
                     </FormControl>
                   ) : profileData?.degree?.length > 0 ? (
-                    profileData?.degree
+                  <Typography sx={{width:'100%'}} textAlign='end'>
+                  {profileData?.degree}
+                  </Typography>
                   ) : (
                     "N/A"
                   )}
@@ -635,30 +637,6 @@ const UserProfile = () => {
                     <Stack sx={{ width: "100%" }}>
                       <Typography textAlign="end">
                         {profileData?.specialization}
-                      </Typography>
-                    </Stack>
-                  )}
-                </Box>
-
-                {/* Hospital */}
-                <Box display="flex" justifyContent="space-between">
-                  <Stack sx={{ width: "100%" }}>
-                    <Typography fontWeight={600}>Hospital:</Typography>
-                  </Stack>
-
-                  {isEdit ? (
-                    <TextField
-                      name="hospitalName"
-                      value={formData?.hospitalName || ""}
-                      variant="outlined"
-                      size="small"
-                      fullWidth
-                      onChange={handleChange}
-                    />
-                  ) : (
-                    <Stack sx={{ width: "100%" }}>
-                      <Typography textAlign="end">
-                        {profileData?.hospitalName}
                       </Typography>
                     </Stack>
                   )}
@@ -795,27 +773,6 @@ const UserProfile = () => {
                   />
                 ) : (
                   profileData?.city
-                )}
-              </Box>
-
-              {/* Zipcode */}
-              <Box display="flex" justifyContent="space-between">
-                <Stack sx={{ width: "100%" }}>
-                  <Typography fontWeight={600}>Zipcode:</Typography>
-                </Stack>
-
-                {isEdit ? (
-                  <TextField
-                    name="zipCode"
-                    type="text"
-                    value={formData.zipCode}
-                    variant="outlined"
-                    size="small"
-                    fullWidth
-                    onChange={handleChange}
-                  />
-                ) : (
-                  profileData?.zipCode
                 )}
               </Box>
 

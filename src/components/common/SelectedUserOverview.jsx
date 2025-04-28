@@ -104,12 +104,12 @@ const SelectedUserOverview = ({ user, role }) => {
                   color: "#4b5563",
                 }}
               >
-                {`Dr. ${user?.firstName} ${user?.lastName}, a highly skilled ${
+                {`Dr. ${user?.doctorName}, a highly skilled ${
                   user?.specialization
                 }, is dedicated to providing exceptional healthcare services. With ${
                   user?.experience
                 } experience in ${user?.specialization?.toLowerCase()}, Dr. ${
-                  user?.lastName
+                  user?.doctorName
                 } specializes in personalized care, early diagnosis, and prevention for optimal patient outcomes.`}
               </Typography>
             </Box>

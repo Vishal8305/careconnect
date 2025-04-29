@@ -12,8 +12,6 @@ import CalendarMonthOutlinedIcon from "@mui/icons-material/CalendarMonthOutlined
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import AssignmentTurnedInOutlinedIcon from "@mui/icons-material/AssignmentTurnedInOutlined";
-import AssignmentTurnedInIcon from "@mui/icons-material/AssignmentTurnedIn";
 import FormatListBulletedOutlinedIcon from "@mui/icons-material/FormatListBulletedOutlined";
 import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 import GroupOutlinedIcon from "@mui/icons-material/GroupOutlined";
@@ -23,6 +21,8 @@ import TodayIcon from "@mui/icons-material/Today";
 import LocalHospitalOutlinedIcon from "@mui/icons-material/LocalHospitalOutlined";
 import LocalHospitalIcon from "@mui/icons-material/LocalHospital";
 import { useLocation, useNavigate } from "react-router-dom";
+import PersonAddIcon from "@mui/icons-material/PersonAdd";
+import PersonAddAlt1OutlinedIcon from "@mui/icons-material/PersonAddAlt1Outlined";
 
 const BottomBar = () => {
   const location = useLocation();
@@ -109,19 +109,19 @@ const BottomBar = () => {
     ],
     admin: [
       {
-        name: "Doctors Approval",
+        name: "Add Doctor",
         icon:
-          location.pathname === "/admin/doctorsApproval" ? (
-            <AssignmentTurnedInIcon />
-          ) : (
-            <AssignmentTurnedInOutlinedIcon />
-          ),
-        path: "/admin/doctorsApproval",
+      location.pathname === "/admin/addDoctor" ? (
+        <PersonAddIcon />
+      ) : (
+        <PersonAddAlt1OutlinedIcon />
+      ),
+        path: "/admin/addDoctor",
       },
       {
         name: "Appointments",
         icon:
-          location.pathname === "/admin/appointments" ? (
+          location.pathname === "/admin/appointmentsOverview" ? (
             <CalendarMonthIcon />
           ) : (
             <CalendarMonthOutlinedIcon />

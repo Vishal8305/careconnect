@@ -95,10 +95,19 @@ const DashboardLayout = ({ role }) => {
           {role === "patient" && (
             <>
               <Route path="availableDoctors" element={<AvailableDoctors />} />
-              <Route path="bookAppointments/:userId" element={<BookAppointment />} />
+              <Route
+                path="bookAppointments/:userId"
+                element={<BookAppointment />}
+              />
               <Route path="myAppointments" element={<MyAppointments />} />
-              <Route path="appointmentsHistory" element={<AppointmentHistory />} />
-              <Route path="consultationRoom/:userId" element={<ConsultationRoom />} />
+              <Route
+                path="appointmentsHistory"
+                element={<AppointmentHistory />}
+              />
+              <Route
+                path="consultationRoom/:userId"
+                element={<ConsultationRoom />}
+              />
               <Route path="profile" element={<UserProfile />} />
             </>
           )}
@@ -121,7 +130,7 @@ const DashboardLayout = ({ role }) => {
 
           {role === "admin" && (
             <>
-              <Route path="appointments" element={<AppointmentsOverview />} />
+              <Route path="appointmentsOverview" element={<AppointmentsOverview />} />
               <Route path="doctorsLists" element={<UsersList />} />
               <Route path="patientLists" element={<UsersList />} />
               <Route path="manageUser/:userId" element={<ManageUser />} />

@@ -92,10 +92,10 @@ const MyAppointments = () => {
     const subInfo =
       userRole === "patient"
         ? `${appointment.doctorDegree} - ${appointment.doctorSpeciality}`
-        : `Height: ${appointment.patientHeight} cm | Weight: ${appointment.patientWeight} kg | Blood Group: ${appointment.patientBloodGroup}`;
+        : null;
 
     const appointmentDetails = (
-      <Box mt={1}>
+      <Box mt={0.5} >
         <Typography fontWeight={500} color="grey.800">
           <strong>Appointment Details</strong>
         </Typography>
@@ -162,7 +162,7 @@ const MyAppointments = () => {
             </Box>
 
             <Box sx={{ display: "flex", gap: 2 }}>
-              <Typography mt={1} color="text.secondary">
+              <Typography mt={0.5} color="text.secondary">
                 {subInfo}
               </Typography>
 
@@ -177,7 +177,7 @@ const MyAppointments = () => {
               )}
             </Box>
 
-            <FormWrapper mt={1} gap={1}>
+            <FormWrapper  gap={1}>
               <Typography>
                 <strong>Email:</strong> {appointment.email}
               </Typography>

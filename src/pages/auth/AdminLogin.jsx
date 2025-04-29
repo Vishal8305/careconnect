@@ -19,7 +19,7 @@ import ScrollToTop from "../../components/common/ScrollToTop";
     const [password, setPassword] = useState("admin@123");
     const navigate = useNavigate();
   
-    const handleLogin = () => navigate("/admin/addDoctor");
+    const handleLogin = () => navigate("/admin/appointmentsOverview");
   
     return (
       <Container

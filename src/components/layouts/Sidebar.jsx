@@ -140,7 +140,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
       {
         name: "Appointments",
         icon: <EventAvailableIcon />,
-        path: "/admin/appointments",
+        path: "/admin/appointmentsOverview",
       },
       {
         name: "Doctors List",

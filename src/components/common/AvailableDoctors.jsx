@@ -106,7 +106,7 @@ const AvailableDoctors = () => {
           {error ? (
             <Typography color="error">{error}</Typography>
           ) : filteredDoctors.length === 0 ? (
-            <Typography variant="h6" color="text.secondary" sx={{ mt: 2 }}>
+            <Typography variant="h6" color="text.secondary" >
               No doctors available
             </Typography>
           ) : (

@@ -95,7 +95,7 @@ const MyAppointments = () => {
         : null;
 
     const appointmentDetails = (
-      <Box mt={0.5} >
+      <Box mt={0.5}>
         <Typography fontWeight={500} color="grey.800">
           <strong>Appointment Details</strong>
         </Typography>
@@ -177,7 +177,7 @@ const MyAppointments = () => {
               )}
             </Box>
 
-            <FormWrapper  gap={1}>
+            <FormWrapper gap={1}>
               <Typography>
                 <strong>Email:</strong> {appointment.email}
               </Typography>
@@ -215,33 +215,54 @@ const MyAppointments = () => {
           }}
         >
           <>
-            {userRole === "patient" && (
+            {userRole === "patient" &&
+              appointment.appointmentDate?.date === todayDate && (
+                <Button
+                  variant="outlined"
+                  sx={{
+                    width: { xs: "100%", sm: 200 },
+                    py: 1,
+                    color: "#696969",
+                    borderColor: "#696969",
+                    textTransform: "none",
+                    "&:hover": {
+                      backgroundColor: "#007BFF",
+                      color: "#fff",
+                      borderColor: "#007BFF",
+                    },
+                  }}
+                  onClick={() => {
+                    navigate(
+                      `/patient/consultationRoom/${appointment.doctorId}`,
+                      {
+                        state: { appointment },
+                      }
+                    );
+                  }}
+                >
+                  Start Appointment
+                </Button>
+              )}
+
+            {userRole === "patient" && filter === "upcoming" && (
               <Button
                 variant="outlined"
                 sx={{
                   width: { xs: "100%", sm: 200 },
                   py: 1,
-                  color: "#696969",
-                  borderColor: "#696969",
+                  color: "#0d6efd",
+                  borderColor: "#0d6efd",
                   textTransform: "none",
                   "&:hover": {
-                    backgroundColor: "#007BFF",
+                    backgroundColor: "#0d6efd",
                     color: "#fff",
-                    borderColor: "#007BFF",
                   },
                 }}
-                onClick={() => {
-                  navigate(
-                    `/patient/consultationRoom/${appointment.doctorId}`,
-                    {
-                      state: { appointment },
-                    }
-                  );
-                }}
               >
-                Start Appointment
+                Reschedule Appointment
               </Button>
             )}
+
             <Button
               variant="outlined"
               sx={{

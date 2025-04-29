@@ -14,6 +14,7 @@ import {
   CircularProgress,
   InputLabel,
   Stack,
+  CardMedia,
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -137,10 +138,11 @@ const UserProfile = () => {
                 </Typography>
               </Box>
             ) : (
-              <Avatar
+              <CardMedia
+              component="img"
                 src={profileData?.selectedImage}
                 alt={profileData?.firstName}
-                sx={{ width: 144, height: 144, borderRadius: 2 }}
+                sx={{  bgcolor: "#eaefff",width: 144, height: 144, borderRadius: 2, objectFit:'contain' }}
               />
             )}
           </Box>

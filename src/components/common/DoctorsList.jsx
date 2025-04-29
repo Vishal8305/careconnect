@@ -14,12 +14,15 @@ import { useNavigate } from "react-router-dom";
 const doctorApi = import.meta.env.VITE_DOCTOR_API;
 
 const DoctorsList = ({ title, specialization, doctorId }) => {
-  const [doctors, setDoctors] = useState([]);
+  const [allDoctors, setAllDoctors] = useState([]);
+  const [visibleDoctors, setVisibleDoctors] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [currentIndex, setCurrentIndex] = useState(0);
   const navigate = useNavigate();
 
   const isRelated = Boolean(specialization && doctorId);
+  const PAGE_SIZE = 5;
 
   useEffect(() => {
     const fetchDoctors = async () => {
@@ -34,9 +37,11 @@ const DoctorsList = ({ title, specialization, doctorId }) => {
                 doctor.specialization.toLowerCase() ===
                   specialization.toLowerCase() && doctor.id !== doctorId
             )
-          : data.filter((doctor) => doctor.isAvailableStatus).slice(0, 10);
+          : data.filter((doctor) => doctor.isAvailableStatus);
 
-        setDoctors(filteredDoctors);
+        setAllDoctors(filteredDoctors);
+        setVisibleDoctors(filteredDoctors.slice(0, PAGE_SIZE));
+        setCurrentIndex(PAGE_SIZE);
       } catch (err) {
         setError(err.message);
       } finally {
@@ -46,6 +51,12 @@ const DoctorsList = ({ title, specialization, doctorId }) => {
 
     fetchDoctors();
   }, [specialization, doctorId, isRelated]);
+
+  const handleLoadMore = () => {
+    const nextIndex = currentIndex + PAGE_SIZE;
+    setVisibleDoctors(allDoctors.slice(0, nextIndex));
+    setCurrentIndex(nextIndex);
+  };
 
   return (
     <Box sx={{ ml: { xs: 0, sm: isRelated ? 0 : 6 }, mt: { xs: 8, sm: 0 } }}>
@@ -91,7 +102,7 @@ const DoctorsList = ({ title, specialization, doctorId }) => {
           mt: 4,
         }}
       >
-        {doctors.map((doctor) => (
+        {visibleDoctors.map((doctor) => (
           <Card
             key={doctor.id}
             sx={{
@@ -106,7 +117,7 @@ const DoctorsList = ({ title, specialization, doctorId }) => {
             onClick={() => {
               if (isRelated) {
                 navigate(`/patient/bookAppointments/${doctor.id}`);
-                window.scrollTo(0, 0); // Force scroll top manually
+                window.scrollTo(0, 0);
               }
             }}
           >
@@ -137,11 +148,12 @@ const DoctorsList = ({ title, specialization, doctorId }) => {
         ))}
       </Box>
 
-      {/* More Button */}
-      {!isRelated && doctors.length > 0 && (
+      {/* Load More Button */}
+      {!isRelated && visibleDoctors.length < allDoctors.length && (
         <Box display="flex" justifyContent="center" mt={4}>
           <Button
             variant="contained"
+            onClick={handleLoadMore}
             sx={{
               bgcolor: "#EFF6FF",
               color: "text.secondary",
@@ -163,7 +175,7 @@ const DoctorsList = ({ title, specialization, doctorId }) => {
           {error}
         </Typography>
       )}
-      {!error && doctors.length === 0 && isRelated && (
+      {!error && visibleDoctors.length === 0 && isRelated && (
         <Typography
           variant="h6"
           textAlign="center"

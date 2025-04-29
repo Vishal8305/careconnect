@@ -60,7 +60,7 @@ const UserProfile = () => {
 
     if (name === "allergies" && value === "No") {
       dispatch(
-        setFormData({ ...formData, allergies: value, allergyDetails: null })
+        setFormData({ ...formData, allergies: value, allergiesDescription: null })
       );
     } else {
       dispatch(setFormData({ ...formData, [name]: value }));
@@ -555,11 +555,11 @@ const UserProfile = () => {
                       variant="outlined"
                       size="small"
                       fullWidth
-                      value={formData?.allergyDetails}
+                      value={formData?.allergiesDescription}
                       onChange={handleChange}
                     />
                   ) : (
-                    profileData?.allergyDetails || "N/A"
+                    profileData?.allergiesDescription || "N/A"
                   )}
                 </Box>
               </Stack>

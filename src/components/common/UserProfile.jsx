@@ -12,7 +12,6 @@ import {
   FormControl,
   Backdrop,
   CircularProgress,
-  InputLabel,
   Stack,
   CardMedia,
 } from "@mui/material";
@@ -553,7 +552,7 @@ const UserProfile = () => {
 
                   {formData?.allergies === "Yes" && isEdit ? (
                     <TextField
-                      name="allergyDetails"
+                      name="allergiesDescription"
                       variant="outlined"
                       size="small"
                       fullWidth

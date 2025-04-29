@@ -31,13 +31,22 @@ export const updateProfileData = createAsyncThunk(
     const { role, uuId } = getState().profile;
     if (!role || !uuId) return rejectWithValue("Missing role or user ID");
 
+    // ✅ Filter out doctor-specific fields for patients
+    const dataToSend = { ...updatedData };
+    if (role === "patient") {
+      delete dataToSend.specialization;
+      delete dataToSend.degree;
+      delete dataToSend.experience;
+      delete dataToSend.fees;
+    }
+
     try {
       const apiUrl =
         role === "patient" ? `${patientApi}/${uuId}` : `${doctorApi}/${uuId}`;
       const response = await fetch(apiUrl, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(updatedData),
+        body: JSON.stringify(dataToSend),
       });
 
       if (!response.ok) {
@@ -52,11 +61,14 @@ export const updateProfileData = createAsyncThunk(
 );
 
 const normalizeSpecialization = (specialization, options) => {
-  return options.find(
-    (item) => item.toLowerCase() === (specialization || "").toLowerCase()
-  ) || specialization || "";
+  return (
+    options.find(
+      (item) => item.toLowerCase() === (specialization || "").toLowerCase()
+    ) ||
+    specialization ||
+    ""
+  );
 };
-
 
 const specialityData = [
   "General Physician",
@@ -69,14 +81,14 @@ const specialityData = [
 
 const degreeOptions = [
   "MBBS",
-  "MD General Medicine", 
-  "MD Dermatology", 
-  "MD Pediatrics", 
-  "MD Gynecology", 
-  "DM Neurology", 
-  "MCh Neurosurgery", 
-  "MD Gastroenterology", 
-  "DM Gastroenterology", 
+  "MD General Medicine",
+  "MD Dermatology",
+  "MD Pediatrics",
+  "MD Gynecology",
+  "DM Neurology",
+  "MCh Neurosurgery",
+  "MD Gastroenterology",
+  "DM Gastroenterology",
 ];
 const experienceOptions = Array.from(
   { length: 12 },
@@ -123,29 +135,29 @@ const profileSlice = createSlice({
       .addCase(fetchProfileData.fulfilled, (state, action) => {
         state.loading = false;
         state.profileData = action.payload;
-      
-     // 👇 Normalize specialization field when setting formData
-      state.formData = {
-        ...action.payload,
-        specialization: normalizeSpecialization(
-          action.payload.specialization,
-          state.specialityData
-        ),
-      };
-    })
+
+        // 👇 Normalize specialization field when setting formData
+        state.formData = {
+          ...action.payload,
+          specialization: normalizeSpecialization(
+            action.payload.specialization,
+            state.specialityData
+          ),
+        };
+      })
 
       .addCase(fetchProfileData.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })
-      
+
       // Update profile data
       .addCase(updateProfileData.pending, (state) => {
         state.loading = true;
       })
       .addCase(updateProfileData.fulfilled, (state, action) => {
         state.loading = false;
-        state.profileData = action.payload; 
+        state.profileData = action.payload;
       })
       .addCase(updateProfileData.rejected, (state, action) => {
         state.loading = false;
@@ -154,5 +166,6 @@ const profileSlice = createSlice({
   },
 });
 
-export const { setRole, setUuId ,setLoading, setFormData  } = profileSlice.actions;
+export const { setRole, setUuId, setLoading, setFormData } =
+  profileSlice.actions;
 export default profileSlice.reducer;

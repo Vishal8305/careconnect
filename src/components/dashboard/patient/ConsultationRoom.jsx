@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   Box,
   Typography,
@@ -14,7 +14,9 @@ import {
   Medication as MedicationIcon,
   CheckCircle as CheckCircleIcon,
 } from "@mui/icons-material";
-import { useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { completeAppointment } from "../../../redux/module/myAppointment/appointmentSlice";
+import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -158,41 +160,24 @@ const doctorDiagnosis = {
 const ConsultationRoom = () => {
   const { userId } = useParams();
   const [selectedSymptom, setSelectedSymptom] = useState("");
-  const [doctor, setDoctor] = useState(null);
-  const [patient, setPatient] = useState(null);
-  const [appointment, setAppointment] = useState(null);
+  const location = useLocation();
+  const appointment = location.state?.appointment;
+  const dispatch = useDispatch();
+  const navigate = useNavigate()
 
-  const patientId = localStorage.getItem("userId");
+  const symptoms = symptomOptions[appointment?.doctorSpeciality] || [];
 
-  const doctorApi = import.meta.env.VITE_DOCTOR_API;
-  const patientApi = import.meta.env.VITE_PATIENT_API;
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const [doctorRes, patientRes] = await Promise.all([
-        fetch(`${doctorApi}/${userId}`),
-        fetch(`${patientApi}/${patientId}`),
-      ]);
-      if (doctorRes.ok) {
-        const data = await doctorRes.json();
-        setDoctor(data);
-      }
-      if (patientRes.ok) {
-        const data = await patientRes.json();
-        setPatient(data);
-        if (data.appointments) {
-          setAppointment(data.appointments); // assuming appointment info is in patient response
-        }
-      }
-    };
-    fetchData();
-  }, [userId, patientId]);
-
-  const symptoms = symptomOptions[doctor?.specialization] || [];
-
-const handleCompleteAppointment = () => {
-
-}
+  const handleCompleteAppointment = async (appointmentToComplete) => {
+    try {
+      await dispatch(
+        completeAppointment({ userId, appointment: appointmentToComplete })
+      ).unwrap();
+      toast.success("Appointment marked as completed");
+      navigate('/patient/appointmentsHistory')
+    } catch (err) {
+      toast.error(err || "Failed to complete appointment");
+    }
+  };
 
   return (
     <Container maxWidth="xl" sx={{ mt: 10 }}>
@@ -202,16 +187,16 @@ const handleCompleteAppointment = () => {
         </Avatar>
         <Box>
           <Typography variant="h4" fontWeight="bold">
-            {doctor?.doctorName}
+            {appointment?.doctorName}
           </Typography>
           <Typography color="text.secondary">
-            Specialization: {doctor?.specialization}
+            Specialization: {appointment?.doctorSpeciality}
           </Typography>
         </Box>
       </Box>
 
       <Typography variant="h6" gutterBottom>
-        👨‍⚕️ {doctor?.doctorName}: Hello{" "}
+        👨‍⚕️ {appointment?.doctorName}: Hello{" "}
         <Box
           component="span"
           sx={{
@@ -220,9 +205,9 @@ const handleCompleteAppointment = () => {
             textTransform: "uppercase",
           }}
         >
-          {patient?.firstName} {patient?.lastName}
+          {appointment?.patientName}
         </Box>
-        , I'm a {doctor?.specialization}. How can I help you today?
+        , I'm a {appointment?.doctorSpeciality}. How can I help you today?
       </Typography>
 
       <Divider sx={{ my: 3 }} />
@@ -283,7 +268,7 @@ const handleCompleteAppointment = () => {
               color="success"
               endIcon={<CheckCircleIcon />}
               sx={{ px: 4, py: 1.5, borderRadius: 3, fontWeight: 600 }}
-              onClick={handleCompleteAppointment}
+              onClick={() => handleCompleteAppointment(appointment)}
             >
               Complete Appointment
             </Button>

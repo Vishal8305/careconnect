@@ -18,7 +18,6 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import {
   cancelAppointment,
-  completeAppointment,
   fetchAppointments,
 } from "../../redux/module/myAppointment/appointmentSlice";
 import { useDispatch, useSelector } from "react-redux";
@@ -30,7 +29,7 @@ const MyAppointments = () => {
   const userId = localStorage.getItem("userId");
   const userRole = localStorage.getItem("userRole");
   const { appointments, loading } = useSelector((state) => state.appointments);
-  const [startAppointment, setStartAppointment] = useState(false);
+
   const [filter, setFilter] = useState("today");
   const navigate = useNavigate();
 
@@ -77,17 +76,6 @@ const MyAppointments = () => {
       toast.success("Appointment cancelled successfully");
     } catch (err) {
       toast.error(err || "Failed to cancel appointment");
-    }
-  };
-
-  const handleCompleteAppointment = async (appointmentToComplete) => {
-    try {
-      await dispatch(
-        completeAppointment({ userId, appointment: appointmentToComplete })
-      ).unwrap();
-      toast.success("Appointment marked as completed");
-    } catch (err) {
-      toast.error(err || "Failed to complete appointment");
     }
   };
 
@@ -173,21 +161,21 @@ const MyAppointments = () => {
               )}
             </Box>
 
-           <Box sx={{display:'flex' , gap:2}}>
-           <Typography mt={1} color="text.secondary">
-              {subInfo}
-            </Typography>
+            <Box sx={{ display: "flex", gap: 2 }}>
+              <Typography mt={1} color="text.secondary">
+                {subInfo}
+              </Typography>
 
-            {userRole === "patient" && (
-              <Button
-                variant="outlined"
-                size="small"
-                sx={{ borderRadius: "999px", fontSize: "12px", px: 2,  }}
-              >
-                {appointment.doctorExperience}
-              </Button>
-            )}
-           </Box>
+              {userRole === "patient" && (
+                <Button
+                  variant="outlined"
+                  size="small"
+                  sx={{ borderRadius: "999px", fontSize: "12px", px: 2 }}
+                >
+                  {appointment.doctorExperience}
+                </Button>
+              )}
+            </Box>
 
             <FormWrapper mt={1} gap={1}>
               <Typography>
@@ -227,27 +215,33 @@ const MyAppointments = () => {
           }}
         >
           <>
-            <Button
-              variant="outlined"
-              sx={{
-                width: { xs: "100%", sm: 200 },
-                py: 1,
-                color: "#696969",
-                borderColor: "#696969",
-                textTransform: "none",
-                "&:hover": {
-                  backgroundColor: "#007BFF",
-                  color: "#fff",
-                  borderColor: "#007BFF",
-                },
-              }}
-              onClick={() => {
-                setStartAppointment(true);
-                navigate(`/patient/consultationRoom/${appointment.doctorId}`);
-              }}
-            >
-              Start Appointment
-            </Button>
+            {userRole === "patient" && (
+              <Button
+                variant="outlined"
+                sx={{
+                  width: { xs: "100%", sm: 200 },
+                  py: 1,
+                  color: "#696969",
+                  borderColor: "#696969",
+                  textTransform: "none",
+                  "&:hover": {
+                    backgroundColor: "#007BFF",
+                    color: "#fff",
+                    borderColor: "#007BFF",
+                  },
+                }}
+                onClick={() => {
+                  navigate(
+                    `/patient/consultationRoom/${appointment.doctorId}`,
+                    {
+                      state: { appointment },
+                    }
+                  );
+                }}
+              >
+                Start Appointment
+              </Button>
+            )}
             <Button
               variant="outlined"
               sx={{
@@ -266,27 +260,6 @@ const MyAppointments = () => {
             >
               Cancel Appointment
             </Button>
-          </>
-
-          <>
-            {startAppointment && <Button
-              variant="outlined"
-              sx={{
-                width: { xs: "100%", sm: 200 },
-                py: 1,
-                color: "#696969",
-                borderColor: "#696969",
-                textTransform: "none",
-                "&:hover": {
-                  backgroundColor: "#28a745",
-                  color: "#fff",
-                  borderColor: "#28a745",
-                },
-              }}
-              onClick={() => handleCompleteAppointment(appointment)}
-            >
-              Complete Appointment
-            </Button>}
           </>
         </Box>
       </Box>

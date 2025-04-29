@@ -14,6 +14,7 @@ import dayjs from "dayjs";
 import DoctorsList from "../../common/DoctorsList";
 import SelectedUserOverview from "../../common/SelectedUserOverview";
 
+
 const BookingSlot = styled(Box)(({ selected }) => ({
   textAlign: "center",
   padding: "24px 0",
@@ -168,7 +169,9 @@ const BookAppointment = () => {
 
       const patientAppointmentData = {
         doctorId: userId,
+        patientId,
         doctorName,
+        patientName,
         doctorProfile: doctorData.selectedImage,
         doctorSpeciality: doctorData.specialization,
         doctorExperience: doctorData.experience,
@@ -183,7 +186,9 @@ const BookAppointment = () => {
 
       const doctorAppointmentData = {
         patientId,
+        doctorId: userId,
         patientName,
+        doctorName,
         patientProfile: patientData.selectedImage,
         patientHeight: patientData.height,
         patientWeight: patientData.weight,

@@ -93,27 +93,25 @@ export const cancelAppointment = createAsyncThunk(
 
 export const completeAppointment = createAsyncThunk(
   'appointments/completeAppointment',
-  async ({ userId, appointment }, { rejectWithValue }) => {
+  async ({  appointment }, { rejectWithValue }) => {
     try {
-      const doctorResponse = await fetch(`${doctorApi}/${userId}`);
+      // Fetch doctor data using the correct doctorId
+      const doctorResponse = await fetch(`${doctorApi}/${appointment.doctorId}`);
       if (!doctorResponse.ok) throw new Error('Failed to fetch doctor data');
-
       const doctorData = await doctorResponse.json();
-      const updatedTotalPatient = (Number(doctorData.totalPatient) || 0) + 1;
 
+      // Update doctor data: increment total patients and mark the appointment as completed
+      const updatedTotalPatient = (Number(doctorData.totalPatient) || 0) + 1;
       const updatedAppointments = doctorData.appointments.map((appt) =>
-        appt.patientId === appointment.patientId &&
-        appt.appointmentDate.date === appointment.appointmentDate.date &&
-        appt.appointmentTime === appointment.appointmentTime
+        appt.appointmentId === appointment.appointmentId
           ? { ...appt, appointmentStatus: 'Completed' }
           : appt
       );
 
+      // Update doctor's availability (make the slot available again)
       const dayOfWeek = new Date(appointment.appointmentDate.date).toLocaleDateString(
-        'en-US',
-        { weekday: 'long' }
+        'en-US', { weekday: 'long' }
       );
-
       const updatedAvailability = { ...doctorData.availability };
       if (updatedAvailability.availableDays[dayOfWeek]) {
         updatedAvailability.availableDays[dayOfWeek] =
@@ -124,7 +122,8 @@ export const completeAppointment = createAsyncThunk(
           );
       }
 
-      await fetch(`${doctorApi}/${userId}`, {
+      // Send the updated doctor data back to the doctor API
+      await fetch(`${doctorApi}/${appointment.doctorId}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -135,17 +134,19 @@ export const completeAppointment = createAsyncThunk(
         }),
       });
 
+      // Fetch patient data using the correct patientId
       const patientResponse = await fetch(`${patientApi}/${appointment.patientId}`);
       if (!patientResponse.ok) throw new Error('Failed to fetch patient data');
       const patientData = await patientResponse.json();
 
+      // Update patient appointments: mark the appointment as completed
       const updatedPatientAppointments = patientData.appointments.map((appt) =>
-        appt.appointmentDate.date === appointment.appointmentDate.date &&
-        appt.appointmentTime === appointment.appointmentTime
+        appt.appointmentId === appointment.appointmentId
           ? { ...appt, appointmentStatus: 'Completed' }
           : appt
       );
 
+      // Send the updated patient data back to the patient API
       await fetch(`${patientApi}/${appointment.patientId}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
@@ -155,12 +156,14 @@ export const completeAppointment = createAsyncThunk(
         }),
       });
 
+      // Return the updated appointments
       return updatedAppointments;
     } catch (err) {
       return rejectWithValue(err.message || 'Failed to complete appointment');
     }
   }
 );
+
 
 const appointmentSlice = createSlice({
   name: 'appointments',

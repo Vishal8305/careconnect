@@ -12,6 +12,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { toast } from "react-toastify";
+import ScrollToTop from "../../components/common/ScrollToTop";
 
 const doctorApi = import.meta.env.VITE_DOCTOR_API;
 const patientApi = import.meta.env.VITE_PATIENT_API;
@@ -29,6 +30,13 @@ const LoginPage = () => {
   useEffect(() => {
     const storedRole = localStorage.getItem("userRole") || "patient";
     setRole(storedRole);
+
+      // Set default credentials based on the role
+  if (storedRole === "patient") {
+    setForm({ username: "vishal", password: "1234" });
+  } else if (storedRole === "doctor") {
+    setForm({ username: "amitSharma", password: "1234" });
+  }
   }, []);
 
   const handleLogin = async () => {
@@ -96,6 +104,7 @@ const LoginPage = () => {
         minHeight: { xs: "70vh", sm: "85vh" },
       }}
     >
+    <ScrollToTop/>
       <Paper
         elevation={3}
         sx={{ p: 4, borderRadius: 3, width: "100%", textAlign: "center" }}

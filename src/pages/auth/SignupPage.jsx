@@ -10,6 +10,7 @@ import {
   resetForm,
   submitSignupForm,
 } from "../../redux/module/auth/signupSlice";
+import ScrollToTop from "../../components/common/ScrollToTop";
 
 const steps = [Step1, Step2, Step3, Step4];
 
@@ -51,6 +52,7 @@ const SignupPage = () => {
       }}
       mt={6}
     >
+    <ScrollToTop/>
       <Container maxWidth="lg">
         <Grid
           container

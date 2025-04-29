@@ -22,8 +22,8 @@ export const loginUser = createAsyncThunk(
       if (user.password !== password) return rejectWithValue("Incorrect password.");
 
       return { user, role };
-    } catch (err) {
-      return rejectWithValue("Something went wrong. Please try again.");
+    } catch (error) {
+      return rejectWithValue("Something went wrong. Please try again.",error);
     }
   }
 );

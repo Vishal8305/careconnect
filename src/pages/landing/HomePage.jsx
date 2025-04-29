@@ -4,6 +4,7 @@ import Header from "../../components/sections/Header";
 import HowItWorks from "../../components/sections/HowItWorks";
 import Banner from "../../components/sections/Banner";
 import DoctorsList from "../../components/common/DoctorsList";
+import ScrollToTop from "../../components/common/ScrollToTop";
 
 const HomePage = () => {
   const howItWorksRef = useRef(null);
@@ -19,6 +20,7 @@ const HomePage = () => {
         pr: { xs: 0, md: "10px" },
       }}
     >
+    <ScrollToTop/>
       <Header onScroll={scrollToHowItWorks} />
       <Box ref={howItWorksRef}>
         <HowItWorks />

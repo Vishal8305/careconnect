@@ -1,6 +1,7 @@
 import React from "react";
 import { Box, Typography } from "@mui/material";
 import AboutImage from "../../assets/about_image.png";
+import ScrollToTop from "../../components/common/ScrollToTop";
 
 const AboutPage = () => {
 
@@ -20,6 +21,7 @@ const AboutPage = () => {
   ]
   return (
     <Box sx={{ ml: { xs: 2, sm: "10%" }, mr: { xs: 2, sm: "8%" }, pr: "10px" }}>
+    <ScrollToTop/>
       <Typography variant="h5" align="center" color="gray" pt={12}>
         ABOUT <span style={{ color: "#374151", fontWeight: "bold" }}>US</span>
       </Typography>

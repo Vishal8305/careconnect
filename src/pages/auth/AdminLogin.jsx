@@ -11,6 +11,7 @@ import {
   import { useState } from "react";
   import { useNavigate } from "react-router-dom";
   import { Visibility, VisibilityOff } from "@mui/icons-material";
+import ScrollToTop from "../../components/common/ScrollToTop";
   
   function AdminLogin() {
     const [showPassword, setShowPassword] = useState(false);
@@ -30,6 +31,7 @@ import {
           minHeight: { xs: "70vh", sm: "85vh" },
         }}
       >
+      <ScrollToTop/>
         <Paper elevation={3} sx={{ p: 4, borderRadius: 3, width: "100%", textAlign: "center" }}>
           <Typography variant="h5" fontWeight="bold" color="#5e5e5e" gutterBottom>
             <span style={{ color: "#000b6d" }}>Admin</span> Login

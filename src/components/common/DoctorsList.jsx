@@ -125,7 +125,7 @@ const DoctorsList = ({ title, specialization, doctorId }) => {
               component="img"
               image={doctor.selectedImage || "/placeholder.jpg"}
               alt={doctor.firstName}
-              sx={{ bgcolor: "#eaefff", height: { xs: "270px", md: "215px" } }}
+              sx={{ bgcolor: "#eaefff", height: { xs: "270px", md: "215px" } , objectFit:'contain' }}
             />
             <CardContent>
               <Box display="flex" alignItems="center" gap={1} color="#22c55e">
